@@ -9,4 +9,6 @@ class Equipe extends Model
 {
     /** @use HasFactory<\Database\Factories\EquipeFactory> */
     use HasFactory;
+
+    protected $fillable = ["code_invitation"];
 }

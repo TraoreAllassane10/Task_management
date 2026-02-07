@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('titre');
             $table->mediumText('description');
-            $table->enum('difficulte', DifficulteEnum::cases());
+            $table->enum('difficulte', DifficulteEnum::cases())->default(DifficulteEnum::NORMAL->value);
             $table->date('date_debut');
             $table->date('date_fin');
 
