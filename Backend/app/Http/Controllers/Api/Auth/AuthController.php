@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Models\User;
+use App\Models\Equipe;
+use App\Trait\ApiResponse;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\auth\LoginUserRequest;
 use App\Http\Requests\auth\RegisterUserRequest;
-use App\Models\Equipe;
-use App\Models\User;
-use App\Trait\ApiResponse;
-use Illuminate\Support\Facades\Auth;
+
 
 class AuthController extends Controller
 {
@@ -54,5 +56,11 @@ class AuthController extends Controller
 
             return $this->success("Utilisateur authentifié", ["token" => $token, "user" => $user], 200);
         }
+    }
+
+    public function profil(Request $request)
+    {
+        $user = $request->user();
+        return $this->success("Le profil de l'utilisateur trouvé", $user, 200);
     }
 }
