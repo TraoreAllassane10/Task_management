@@ -9,4 +9,10 @@ class MiniTache extends Model
 {
     /** @use HasFactory<\Database\Factories\MiniTacheFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'titre',
+        'estAccompli',
+        'tache_id'
+    ];
 }

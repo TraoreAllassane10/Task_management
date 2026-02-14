@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('taches', function (Blueprint $table) {
-            $table->integer('progression')->after('date_fin');
+            $table->integer('progression')->default(0)->after('date_fin');
         });
     }
 
