@@ -70,6 +70,9 @@ class AdminTacheService
             );
         }
 
+        // assignation des utilisateurs à la tache crée
+        $tache->utilisateursAssignes()->attach($data['users']);
+
         return $tache;
     }
 

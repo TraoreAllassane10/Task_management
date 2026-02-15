@@ -22,13 +22,18 @@ class Tache extends Model
 
     protected $with = ['miniTaches'];
 
+    protected function scopeOwner(Builder $query, mixed $equipeId)
+    {
+        return $query->where("equipe_id", $equipeId);
+    }
+
     public function miniTaches()
     {
         return $this->hasMany(MiniTache::class);
     }
 
-    protected function scopeOwner(Builder $query, mixed $equipeId)
+    public function utilisateursAssignes()
     {
-        return $query->where("equipe_id", $equipeId);
+        return $this->belongsToMany(User::class, 'assignation');
     }
 }

@@ -14,7 +14,7 @@ class AdminTacheRepository
         $this->user = Auth::user();
     }
 
-    public function all(mixed $status)
+    public function all(array|string|null $status)
     {
         $query = Tache::query()->owner($this->user->equipe_id);
 
