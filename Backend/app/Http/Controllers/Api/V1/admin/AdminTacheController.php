@@ -64,6 +64,11 @@ class AdminTacheController extends Controller
 
         $tache = $this->adminTacheService->updateTache($id, $data);
 
+        if ($tache === null) {
+            
+            return $this->notFound('Tache introuvable');
+        }
+
         return $this->success("Tache modifiée avec succès", $tache, 200);
     }
 

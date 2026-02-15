@@ -78,7 +78,33 @@ class AdminTacheService
 
     public function updateTache(string $id, array $data)
     {
-        return $this->adminTacheRepository->update($id, $data);
+        $tache = $this->adminTacheRepository->find($id);
+
+        if ($tache === null) {
+            return $tache = null;
+        }
+
+        $tacheDto = new CreateTacheDto(
+            $data['titre'],
+            $data['description'],
+            Carbon::createFromFormat("d/m/y", $data['date_debut']),
+            Carbon::createFromFormat("d/m/y", $data['date_fin'])
+        );
+
+        // Mise à jour de la tache
+        $tacheModifiee = $this->adminTacheRepository->update($id, [
+            "titre" => $tacheDto->titre,
+            "description" => $tacheDto->description,
+            "date_debut" => $tacheDto->date_debut,
+            "date_fin" => $tacheDto->date_fin,
+            "equipe_id" => Auth::user()->equipe_id
+        ]);
+
+        // // synchronisation des utilisateurs assigné
+        $tacheModifiee->utilisateursAssignes()->sync($data['users']);
+
+        return $tacheModifiee;
+
     }
 
     public function deleteTache(string $id)

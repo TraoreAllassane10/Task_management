@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateTacheRequest extends FormRequest
 {
-    /**
+     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -28,7 +28,8 @@ class UpdateTacheRequest extends FormRequest
             "description" => ["required", "string", "min:5"],
             "date_debut" => ["required", "string"],
             "date_fin" => ["required", "string", "after_or_equal:date_debut"],
-            "minitaches" => ["required", "array"]
+            "minitaches" => ["required", "array"],
+            "users" => ["nullable", "array"]
         ];
     }
 
@@ -66,6 +67,9 @@ class UpdateTacheRequest extends FormRequest
             // Mini tâches
             "minitaches.required" => "Les mini tâches sont obligatoires.",
             "minitaches.array" => "Les mini tâches doivent être envoyées sous forme de tableau.",
+
+            // Users
+            "users.array" => "Les utilisateurs doivent être envoyées sous forme de tableau.",
         ];
     }
 }

@@ -20,7 +20,7 @@ class Tache extends Model
         "equipe_id"
     ];
 
-    protected $with = ['miniTaches'];
+    protected $with = ['miniTaches', "utilisateursAssignes"];
 
     protected function scopeOwner(Builder $query, mixed $equipeId)
     {

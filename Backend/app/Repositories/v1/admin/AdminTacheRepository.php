@@ -42,7 +42,10 @@ class AdminTacheRepository
     public function update(string $id, array $data)
     {
         $tache = $this->find($id);
-        return $tache->update($data);
+
+        $tache->update($data);
+
+        return $tache->fresh();
     }
 
     public function delete(string $id)
