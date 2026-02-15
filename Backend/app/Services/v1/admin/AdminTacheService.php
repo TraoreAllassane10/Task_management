@@ -3,6 +3,7 @@
 namespace App\Services\v1\admin;
 
 use App\Dtos\CreateTacheDto;
+use App\Models\Tache;
 use App\Repositories\v1\admin\AdminTacheRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,23 @@ class AdminTacheService
 
     public function getTaches(array|string|null $status)
     {
-        return $this->adminTacheRepository->all($status);
+
+        $taches = $this->adminTacheRepository->all($status);
+        $nombreTacheTrouvee = $taches->count();
+
+        $nombreTacheEnAttente = Tache::where("progression", "=", 0)->count();
+        $nombreTacheEnProgession = Tache::whereBetween("progression", [1, 99])->count();
+        $nombreTacheTerminee = Tache::Where("progression", "=", 100)->count();
+
+        return [
+            "total" => $nombreTacheTrouvee,
+            "taches" => $taches,
+            "meta" => [
+                "attente" => $nombreTacheEnAttente,
+                "progession" => $nombreTacheEnProgession,
+                "terminee" => $nombreTacheTerminee
+            ]
+        ];
     }
 
     public function getTache(string $id)

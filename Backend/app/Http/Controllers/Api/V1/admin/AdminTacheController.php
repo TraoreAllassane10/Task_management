@@ -24,9 +24,9 @@ class AdminTacheController extends Controller
     {
         $status = $request->query('status', "");
 
-        $taches = $this->adminTacheService->getTaches($status);
+        $data = $this->adminTacheService->getTaches($status);
 
-        return $this->success("Liste de mes taches", $taches, 200);
+        return $this->success("Liste de mes taches", $data, 200);
     }
 
     /**
