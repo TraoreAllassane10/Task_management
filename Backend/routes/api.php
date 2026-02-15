@@ -15,7 +15,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Routes V1
     Route::prefix('v1')->group(function () {
         // Gestion des taches par ADMIN
-        Route::prefix('admin')->group(function () {
+        Route::middleware("admin")->prefix('admin')->group(function () {
             Route::controller(AdminTacheController::class)->group(function () {
                 Route::get('/taches', 'index');
                 Route::get('/taches/{tache}', 'show');
