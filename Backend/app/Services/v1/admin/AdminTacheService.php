@@ -19,13 +19,14 @@ class AdminTacheService
 
     public function getTaches(array|string|null $status)
     {
+        $user = Auth::user();
 
         $taches = $this->adminTacheRepository->all($status);
         $nombreTacheTrouvee = $taches->count();
 
-        $nombreTacheEnAttente = Tache::where("progression", "=", 0)->count();
-        $nombreTacheEnProgession = Tache::whereBetween("progression", [1, 99])->count();
-        $nombreTacheTerminee = Tache::Where("progression", "=", 100)->count();
+        $nombreTacheEnAttente = Tache::owner($user->equipe_id)->where("progression", "=", 0)->count();
+        $nombreTacheEnProgession = Tache::owner($user->equipe_id)->whereBetween("progression", [1, 99])->count();
+        $nombreTacheTerminee = Tache::owner($user->equipe_id)->Where("progression", "=", 100)->count();
 
         return [
             "total" => $nombreTacheTrouvee,
