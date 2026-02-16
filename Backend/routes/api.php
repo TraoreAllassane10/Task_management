@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\V1\admin\AdminDashbaord;
 use App\Http\Controllers\Api\V1\admin\AdminMenmbreController;
 use App\Http\Controllers\Api\V1\admin\AdminTacheController;
+use App\Http\Controllers\Api\V1\membre\MembreDashboardController;
+use App\Http\Controllers\Api\V1\membre\MembreTacheController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -34,6 +36,14 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::controller(AdminMenmbreController::class)->group(function() {
                 Route::get('/equipe', 'index');
             });
+        });
+
+        // Gestion des taches par MEMBRE
+        Route::middleware("membre")->prefix('membre')->group(function() {
+            // Dashboard Membre
+            Route::get('/dashboard', [MembreDashboardController::class, "index"]);
+
+            Route::get('/taches', [MembreTacheController::class, 'index']);
         });
     });
 });
