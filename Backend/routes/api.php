@@ -43,7 +43,10 @@ Route::middleware('auth:sanctum')->group(function () {
             // Dashboard Membre
             Route::get('/dashboard', [MembreDashboardController::class, "index"]);
 
+            // Liste des taches associée à un l'utilisateur
             Route::get('/taches', [MembreTacheController::class, 'index']);
+
+            Route::get('/taches/{tache}/sous-tache/{minitache}', [MembreTacheController::class, 'checkin']);
         });
     });
 });

@@ -23,4 +23,11 @@ class MembreTacheController extends Controller
 
         return $this->success('Liste de mes taches', $taches, 200);
     }
+
+    public function checkin(string $tache, string $mintache)
+    {
+        $mintacheCheckin = $this->membreTacheService->checkinTache($tache, $mintache);
+
+        return $this->success('Tache mis à jour', $mintacheCheckin);
+    }
 }

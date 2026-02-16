@@ -2,6 +2,7 @@
 
 namespace App\Services\v1\membre;
 
+use App\Models\Tache;
 use Illuminate\Support\Facades\Auth;
 
 class MembreTacheService
@@ -21,5 +22,21 @@ class MembreTacheService
         }
 
         return $query->latest()->get();
+    }
+
+    public function checkinTache(string $tacheId, string $mintacheId)
+    {
+        $tache = Tache::find($tacheId);
+
+        $mintache = $tache
+            ->miniTaches()
+            ->where("id", $mintacheId)
+            ->first();
+
+        $mintacheCheckin = $mintache->update([
+            "estAccompli" => $mintache->estAccompli == 1 ? 0 : 1
+        ]);
+
+        return $mintacheCheckin;
     }
 }

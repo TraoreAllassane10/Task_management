@@ -85,4 +85,11 @@ class AdminTacheController extends Controller
 
         return $this->success("Tache supprimée avec succès", $tache, 200);
     }
+
+      public function checkin(string $tache, string $mintache)
+    {
+        $mintacheCheckin = $this->adminTacheService->checkinTache($tache, $mintache);
+
+        return $this->success('Tache mis à jour', $mintacheCheckin);
+    }
 }

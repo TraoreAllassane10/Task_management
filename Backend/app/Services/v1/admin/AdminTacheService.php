@@ -118,4 +118,20 @@ class AdminTacheService
 
         return $tache->delete($id);
     }
+
+    public function checkinTache(string $tacheId, string $mintacheId)
+    {
+        $tache = Tache::find($tacheId);
+
+        $mintache = $tache
+            ->miniTaches()
+            ->where("id", $mintacheId)
+            ->first();
+
+        $mintacheCheckin = $mintache->update([
+            "estAccompli" => $mintache->estAccompli == 1 ? 0 : 1
+        ]);
+
+        return $mintacheCheckin;
+    }
 }
