@@ -39,7 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         // Gestion des taches par MEMBRE
-        Route::middleware("membre")->prefix('membre')->group(function() {
+        Route::prefix('membre')->group(function() {
             // Dashboard Membre
             Route::get('/dashboard', [MembreDashboardController::class, "index"]);
 

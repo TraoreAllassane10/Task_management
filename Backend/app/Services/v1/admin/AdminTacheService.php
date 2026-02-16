@@ -7,6 +7,7 @@ use App\Models\Tache;
 use App\Repositories\v1\admin\AdminTacheRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class AdminTacheService
 {
@@ -21,9 +22,13 @@ class AdminTacheService
     {
         $user = Auth::user();
 
-        $taches = $this->adminTacheRepository->all($status);
-        $nombreTacheTrouvee = $taches->count();
+        // Recuperation de la liste des taches
+        $taches = Cache::remember("taches_all", now()->addMinutes(5), function () use ($status) {
+            return  $this->adminTacheRepository->all($status);
+        });
 
+        // Les statistiques
+        $nombreTacheTrouvee = $taches->count();
         $nombreTacheEnAttente = Tache::owner($user->equipe_id)->where("progression", "=", 0)->count();
         $nombreTacheEnProgession = Tache::owner($user->equipe_id)->whereBetween("progression", [1, 99])->count();
         $nombreTacheTerminee = Tache::owner($user->equipe_id)->Where("progression", "=", 100)->count();
@@ -41,7 +46,11 @@ class AdminTacheService
 
     public function getTache(string $id)
     {
-        return $this->adminTacheRepository->find($id);
+        $tache = Cache::remember("taches_" . $id, now()->addMinutes(5), function () use ($id) {
+            return $this->adminTacheRepository->find($id);
+        });
+
+        return $tache;
     }
 
     public function createTache(array $data)
@@ -74,6 +83,9 @@ class AdminTacheService
         // assignation des utilisateurs à la tache crée
         $tache->utilisateursAssignes()->attach($data['users']);
 
+        // Vider le cache
+        Cache::forget('taches_all');
+
         return $tache;
     }
 
@@ -104,8 +116,10 @@ class AdminTacheService
         // // synchronisation des utilisateurs assigné
         $tacheModifiee->utilisateursAssignes()->sync($data['users']);
 
-        return $tacheModifiee;
+        // Vider le cache
+        Cache::forget('taches_all');
 
+        return $tacheModifiee;
     }
 
     public function deleteTache(string $id)
@@ -116,7 +130,12 @@ class AdminTacheService
             return $tache = null;
         }
 
-        return $tache->delete($id);
+        $tacheSupprimee = $tache->delete($id);
+
+        // Vider le cache
+        Cache::forget('taches_all');
+
+        return $tacheSupprimee;
     }
 
     public function checkinTache(string $tacheId, string $mintacheId)
@@ -131,6 +150,20 @@ class AdminTacheService
         $mintacheCheckin = $mintache->update([
             "estAccompli" => $mintache->estAccompli == 1 ? 0 : 1
         ]);
+
+        if ($mintacheCheckin) {
+            $totalMinitache = $tache->miniTaches()->count();
+            $miniTacheTerminee = $tache->miniTaches()->where("estAccompli", 1)->count();
+
+            $pourcentageDeProgression = $miniTacheTerminee > 0 ? (int) round(($miniTacheTerminee * 100) / $totalMinitache, 0) : 0;
+
+            $tache->update([
+                "progression" => $pourcentageDeProgression
+            ]);
+        }
+
+        // Vider le cache
+        Cache::forget('taches_all');
 
         return $mintacheCheckin;
     }

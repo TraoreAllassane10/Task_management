@@ -4,6 +4,7 @@ namespace App\Services\v1\membre;
 
 use App\Models\Tache;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class MembreTacheService
 {
@@ -36,6 +37,17 @@ class MembreTacheService
         $mintacheCheckin = $mintache->update([
             "estAccompli" => $mintache->estAccompli == 1 ? 0 : 1
         ]);
+
+        if ($mintacheCheckin) {
+            $totalMinitache = $tache->miniTaches()->count();
+            $miniTacheTerminee = $tache->miniTaches()->where("estAccompli", 1)->count();
+
+            $pourcentageDeProgression = $miniTacheTerminee > 0 ? (int) round(($miniTacheTerminee * 100) / $totalMinitache, 0) : 0;
+            
+            $tache->update([
+                "progression" => $pourcentageDeProgression
+            ]);
+        }
 
         return $mintacheCheckin;
     }

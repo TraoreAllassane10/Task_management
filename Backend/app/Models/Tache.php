@@ -15,6 +15,7 @@ class Tache extends Model
         "titre",
         "description",
         "difficulte",
+        "progression",
         "date_debut",
         "date_fin",
         "equipe_id"
