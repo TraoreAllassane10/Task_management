@@ -1,0 +1,12 @@
+Cet App ne s'execute plus dans mon environement local mais dans un un container docker.
+
+Pour lancer cette app, il faut lancer "docker compose up -d" pour excuter le container "backend" et acceder à http://localhost:8000
+
+Toutes les commandes laravel artisan doivent commencer par : "docker exec -it backend" 
+EXEMPLE : "docker exec -it backend php artisan db:seed"
+
+
+BASE DE DONNEES:
+- acceder http://localhost:8080
+- user : laravel
+- password : root
