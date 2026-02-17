@@ -7,6 +7,7 @@ use App\Http\Requests\admin\CreateTacheRequest;
 use App\Http\Requests\admin\UpdateTacheRequest;
 use App\Services\v1\admin\AdminTacheService;
 use App\Trait\ApiResponse;
+use Exception;
 use Illuminate\Http\Request;
 
 class AdminTacheController extends Controller
@@ -22,11 +23,15 @@ class AdminTacheController extends Controller
      */
     public function index(Request $request)
     {
-        $status = $request->query('status', "");
+        try {
+            $status = $request->query('status', "");
 
-        $data = $this->adminTacheService->getTaches($status);
+            $data = $this->adminTacheService->getTaches($status);
 
-        return $this->success("Liste de mes taches", $data, 200);
+            return $this->success("Liste de mes taches", $data, 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
 
     /**
@@ -34,11 +39,15 @@ class AdminTacheController extends Controller
      */
     public function store(CreateTacheRequest $request)
     {
-        $data = $request->validated();
+        try {
+            $data = $request->validated();
 
-        $tache = $this->adminTacheService->createTache($data);
+            $tache = $this->adminTacheService->createTache($data);
 
-        return $this->success("Tache crée avec succès", $tache, 200);
+            return $this->success("Tache crée avec succès", $tache, 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
 
     /**
@@ -46,13 +55,17 @@ class AdminTacheController extends Controller
      */
     public function show(string $id)
     {
-        $tache = $this->adminTacheService->getTache($id);
+        try {
+            $tache = $this->adminTacheService->getTache($id);
 
-        if (!$tache) {
-            return $this->notFound("Tache intouvablr");
+            if (!$tache) {
+                return $this->notFound("Tache intouvablr");
+            }
+
+            return $this->success("Une tache trouvée", $tache, 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage());
         }
-
-        return $this->success("Une tache trouvée", $tache, 200);
     }
 
     /**
@@ -60,16 +73,20 @@ class AdminTacheController extends Controller
      */
     public function update(UpdateTacheRequest $request, string $id)
     {
-        $data = $request->validated();
+        try {
+            $data = $request->validated();
 
-        $tache = $this->adminTacheService->updateTache($id, $data);
+            $tache = $this->adminTacheService->updateTache($id, $data);
 
-        if ($tache === null) {
-            
-            return $this->notFound('Tache introuvable');
+            if ($tache === null) {
+
+                return $this->notFound('Tache introuvable');
+            }
+
+            return $this->success("Tache modifiée avec succès", $tache, 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage());
         }
-
-        return $this->success("Tache modifiée avec succès", $tache, 200);
     }
 
     /**
@@ -77,19 +94,27 @@ class AdminTacheController extends Controller
      */
     public function destroy(string $id)
     {
-        $tache = $this->adminTacheService->deleteTache($id);
+        try {
+            $tache = $this->adminTacheService->deleteTache($id);
 
-        if (!$tache) {
-            return $this->notFound('Tache introuvable');
+            if (!$tache) {
+                return $this->notFound('Tache introuvable');
+            }
+
+            return $this->success("Tache supprimée avec succès", $tache, 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage());
         }
-
-        return $this->success("Tache supprimée avec succès", $tache, 200);
     }
 
-      public function checkin(string $tache, string $mintache)
+    public function checkin(string $tache, string $mintache)
     {
-        $mintacheCheckin = $this->adminTacheService->checkinTache($tache, $mintache);
+        try {
+            $mintacheCheckin = $this->adminTacheService->checkinTache($tache, $mintache);
 
-        return $this->success('Tache mis à jour', $mintacheCheckin);
+            return $this->success('Tache mis à jour', $mintacheCheckin);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
 }

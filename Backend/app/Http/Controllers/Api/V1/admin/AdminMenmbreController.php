@@ -6,15 +6,20 @@ use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Trait\ApiResponse;
+use Exception;
 
 class AdminMenmbreController extends Controller
-{   
+{
     use ApiResponse;
 
     public function index()
     {
-        $membres = User::where("role", UserRole::MEMBRE->value)->get();
+        try {
+            $membres = User::where("role", UserRole::MEMBRE->value)->get();
 
-        return $this->success("Liste des membres", $membres);
+            return $this->success("Liste des membres", $membres);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
 }
