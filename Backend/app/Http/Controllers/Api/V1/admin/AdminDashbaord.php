@@ -54,7 +54,10 @@ class AdminDashbaord extends Controller
                 "tache_recentes" => $tache_recentes
             ]);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 }

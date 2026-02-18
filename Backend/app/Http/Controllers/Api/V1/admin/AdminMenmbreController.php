@@ -19,7 +19,10 @@ class AdminMenmbreController extends Controller
 
             return $this->success("Liste des membres", $membres);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 }

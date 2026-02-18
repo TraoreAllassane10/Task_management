@@ -30,7 +30,10 @@ class AdminTacheController extends Controller
 
             return $this->success("Liste de mes taches", $data, 200);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 
@@ -46,7 +49,10 @@ class AdminTacheController extends Controller
 
             return $this->success("Tache crée avec succès", $tache, 200);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 
@@ -64,7 +70,10 @@ class AdminTacheController extends Controller
 
             return $this->success("Une tache trouvée", $tache, 200);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 
@@ -85,7 +94,10 @@ class AdminTacheController extends Controller
 
             return $this->success("Tache modifiée avec succès", $tache, 200);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 
@@ -103,7 +115,10 @@ class AdminTacheController extends Controller
 
             return $this->success("Tache supprimée avec succès", $tache, 200);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 
@@ -114,7 +129,10 @@ class AdminTacheController extends Controller
 
             return $this->success('Tache mis à jour', $mintacheCheckin);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 }

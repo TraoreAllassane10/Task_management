@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\auth\LoginUserRequest;
 use App\Http\Requests\auth\RegisterUserRequest;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -62,7 +63,11 @@ class AuthController extends Controller
                 return $this->success("Utilisateur authentifié", ["token" => $token, "user" => $user], 200);
             }
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            Log::info($e);
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 
@@ -72,7 +77,10 @@ class AuthController extends Controller
             $user = $request->user();
             return $this->success("Le profil de l'utilisateur trouvé", $user, 200);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 }

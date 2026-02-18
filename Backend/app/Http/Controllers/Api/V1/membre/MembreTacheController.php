@@ -25,7 +25,10 @@ class MembreTacheController extends Controller
 
             return $this->success('Liste de mes taches', $taches, 200);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 
@@ -36,7 +39,10 @@ class MembreTacheController extends Controller
 
             return $this->success('Tache mis à jour', $mintacheCheckin);
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(
+                "Une erreur interne est survenue.",
+                500
+            );
         }
     }
 }

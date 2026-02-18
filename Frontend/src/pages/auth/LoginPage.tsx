@@ -1,7 +1,37 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import lefSideImage from "../../assets/leftSideImage.png";
+import { useState, type FormEvent } from "react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useFlow } from "fractostate";
+import { UserFlow } from "../../flows/userFlow";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const [userState, { actions: userActions }] = useFlow(UserFlow);
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const user = await userActions.login(email, password);
+
+    setEmail("");
+    setPassword("");
+
+    if (user) {
+      if (user.role === "Admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/member/dashboard");
+      }
+    }
+  };
+
   return (
     <div className="flex h-screen w-full bg-white">
       <div className="w-full hidden md:inline-block">
@@ -9,7 +39,10 @@ const LoginPage = () => {
       </div>
 
       <div className="w-full flex flex-col items-center justify-center">
-        <form className="md:w-96 w-80 flex flex-col items-center justify-center">
+        <form
+          onSubmit={handleLogin}
+          className="md:w-96 w-80 flex flex-col items-center justify-center"
+        >
           <h2 className="text-4xl text-gray-900 font-medium">Connectez-vous</h2>
           <p className="text-sm text-gray-500/90 mt-3">
             Ravi de vous revoir! connectez-vous svp
@@ -33,6 +66,8 @@ const LoginPage = () => {
             <div className="w-full h-px bg-gray-300/90"></div>
           </div>
 
+          {userState.error && (<span className="text-sm text-red-500 mb-2">{userState.error}</span>)}
+
           <div className="flex items-center w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
             <svg
               width="16"
@@ -51,6 +86,8 @@ const LoginPage = () => {
             <input
               type="email"
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
               required
             />
@@ -70,11 +107,21 @@ const LoginPage = () => {
               />
             </svg>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Mot de passe"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
               required
             />
+
+            <button type="button" onClick={() => setShowPassword((v) => !v)}>
+              {showPassword ? (
+                <EyeOff className="mx-2 text-gray-500/80" />
+              ) : (
+                <Eye className="mx-2 text-gray-500/80" />
+              )}
+            </button>
           </div>
 
           <div className="w-full flex items-center justify-between mt-8 text-gray-500/80">
@@ -91,9 +138,14 @@ const LoginPage = () => {
 
           <button
             type="submit"
-            className="mt-8 w-full h-11 rounded-full text-white bg-indigo-500 hover:opacity-90 transition-opacity"
+            className="mt-8 w-full h-11 rounded-full text-white bg-indigo-500 hover:opacity-90 transition-opacity flex items-center justify-center"
+            disabled={userState.isLoading}
           >
-            Connexion
+            {userState.isLoading ? (
+              <Loader2 className="animate-spin text-white mr-2" />
+            ) : (
+              "Connexion"
+            )}
           </button>
           <p className="text-gray-500/90 text-sm mt-4">
             N'avez-vous pas de compte?{" "}

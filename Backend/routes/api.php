@@ -8,13 +8,13 @@ use App\Http\Controllers\Api\V1\membre\MembreDashboardController;
 use App\Http\Controllers\Api\V1\membre\MembreTacheController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('v1/register', [AuthController::class, 'register']);
+Route::post('v1/login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
     // Profil utilisateur
-    Route::get('/user/profil', [AuthController::class, 'profil']);
+    Route::get('v1/user/profil', [AuthController::class, 'profil']);
 
     // Routes V1
     Route::prefix('v1')->group(function () {

@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import lefSideImage from "../../assets/leftSideImage.png";
-import { Key, User } from "lucide-react";
+import { Eye, EyeOff, Key, User } from "lucide-react";
 import AvatarFileUpload from "../../components/AvatarFileUpload";
+import { useState } from "react";
 
 const RegisterPage = () => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   return (
     <div className="flex h-screen w-full bg-white">
       <div className="w-full hidden md:inline-block">
@@ -90,11 +92,19 @@ const RegisterPage = () => {
                 />
               </svg>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Mot de passe"
                 className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
                 required
               />
+
+              <button type="button" onClick={() => setShowPassword((v) => !v)}>
+                {showPassword ? (
+                  <EyeOff className="mx-2 text-gray-500/80" />
+                ) : (
+                  <Eye className="mx-2 text-gray-500/80" />
+                )}
+              </button>
             </div>
 
             <div className="flex items-center mt-6 w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
