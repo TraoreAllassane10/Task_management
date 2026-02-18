@@ -17,8 +17,27 @@ export const UserFlow = defineFlow(
   } as initialeState,
   {
     actions: {
+      register: (formData: FormData) => async (ops: any) => {
+        ops.self.isLoading._set(true);
+        ops.self.error._set(null);
+
+        try {
+          const response = await AuthServices.register(formData);
+
+          if (response && response.success) {
+            return response.data;
+          }
+        } catch (error: any) {
+          ops.self.error._set(error.message);
+          console.log("Erreur dans register de UserFlow: ", error.message);
+        } finally {
+          ops.self.isLoading._set(false);
+        }
+      },
+
       login: (email: string, password: string) => async (ops: any) => {
         ops.self.isLoading._set(true);
+        ops.self.error._set(null);
 
         try {
           const response = await AuthServices.login({ email, password });
@@ -28,11 +47,10 @@ export const UserFlow = defineFlow(
             ops.self.profile._set(response.data.user);
 
             return response.data.user;
-          } else {
-            ops.self.error._set("Email ou mot de passe incorrect");
           }
         } catch (error: any) {
-          console.log("Erreur dans login de UserFlow: ", error.response);
+          ops.self.error._set(error.message);
+          console.log("Erreur dans login de UserFlow: ", error.message);
         } finally {
           ops.self.isLoading._set(false);
         }
@@ -47,8 +65,8 @@ export const UserFlow = defineFlow(
           if (response && response.success) {
             ops.self.profile._set(response.data);
           }
-        } catch (error) {
-          ops.self.error._set(error);
+        } catch (error: any) {
+          ops.self.error._set(error.message);
           console.log("Erreur dans getProfil de UserFlow: ", error);
         } finally {
           ops.self.isLoading._set(false);

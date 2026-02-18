@@ -35,11 +35,21 @@ class AuthController extends Controller
                 return  $this->error("Le code d'invitation fourni ou le lien d'invitation n'est pas valide", 404);
             }
 
+        
+
+            $pathPhoto = null;
+            if ($request->hasFile('photo')) {
+                $pathPhoto = $request->file('photo')->store(
+                    "avatar",
+                    "public",
+                );
+            }
+
             $user = User::create([
                 "name" => $data['name'],
                 "email" => $data['email'],
                 "password" => $data['password'],
-                "photo" => $data['photo'] ?? null,
+                "photo" => $pathPhoto ?? null,
                 "equipe_id" => $equipe->id
             ]);
 

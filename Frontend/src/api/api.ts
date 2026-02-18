@@ -2,9 +2,6 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://127.0.0.1:8000/api/v1/",
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 api.interceptors.request.use((config) => {
@@ -25,7 +22,7 @@ api.interceptors.response.use(
     //   console.log(error.response.data.message);
     // }
 
-    return Promise.reject(error.response);
+    return Promise.reject(error.response.data);
   },
 );
 

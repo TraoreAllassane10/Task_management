@@ -1,11 +1,57 @@
-import { Link } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import lefSideImage from "../../assets/leftSideImage.png";
-import { Eye, EyeOff, Key, User } from "lucide-react";
+import { Eye, EyeOff, Key, Loader2, User } from "lucide-react";
 import AvatarFileUpload from "../../components/AvatarFileUpload";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
+import { useFlow } from "fractostate";
+import { UserFlow } from "../../flows/userFlow";
+import toast from "react-hot-toast";
 
 const RegisterPage = () => {
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [code_invitation, setCodeInvitation] = useState<string>("");
+  const [photo, setPhoto] = useState<File | null>(null);
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const [userState, { actions: userActions }] = useFlow(UserFlow);
+
+  const navigate = useNavigate();
+
+  const handleRegister = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (photo && !(photo instanceof File)) {
+      console.error("Photo invalide");
+      return;
+    }
+
+    const formData = new FormData();
+    
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("code_invitation", code_invitation);
+    if (photo) {
+      formData.append("photo", photo);
+    }
+
+    const user = await userActions.register(formData);
+
+    if (user) {
+      toast.success("Compte crée avec success!");
+      navigate("/");
+    }
+  };
+
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    return <Navigate to="/member/dashboard" />;
+  }
+
   return (
     <div className="flex h-screen w-full bg-white">
       <div className="w-full hidden md:inline-block">
@@ -13,7 +59,11 @@ const RegisterPage = () => {
       </div>
 
       <div className="w-full flex flex-col items-center justify-center">
-        <form className="md:w-96 w-80 flex flex-col items-center justify-center">
+        <form
+          onSubmit={handleRegister}
+          className="md:w-96 w-80 flex flex-col items-center justify-center"
+          encType="multipart/form-data"
+        >
           <h2 className="text-4xl text-gray-900 font-medium">Inscrivez-vous</h2>
           <p className="text-sm text-gray-500/90 mt-3">
             Entrer vos informations pour la creation de votre compte
@@ -38,7 +88,7 @@ const RegisterPage = () => {
           </div>
 
           <div className="flex items-center my-2">
-            <AvatarFileUpload />
+            <AvatarFileUpload setPhoto={setPhoto} />
           </div>
 
           {/* Nom et Email */}
@@ -48,6 +98,8 @@ const RegisterPage = () => {
               <input
                 type="text"
                 placeholder="Nom"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
                 required
               />
@@ -71,12 +123,15 @@ const RegisterPage = () => {
               <input
                 type="email"
                 placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
                 required
               />
             </div>
           </div>
 
+          {/* Mot de passe et code d'invitation */}
           <div className="grid grid-cols-2 gap-2">
             <div className="flex items-center mt-6 w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
               <svg
@@ -94,6 +149,8 @@ const RegisterPage = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
                 required
               />
@@ -112,23 +169,34 @@ const RegisterPage = () => {
               <input
                 type="text"
                 placeholder="Code d'invitation"
+                value={code_invitation}
+                onChange={(e) => setCodeInvitation(e.target.value)}
                 className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
                 required
               />
             </div>
           </div>
 
+          {userState.error && (
+            <span className="text-sm text-red-500 my-2">{userState.error}</span>
+          )}
+
           <button
             type="submit"
-            className="mt-8 w-full h-11 rounded-full text-white bg-indigo-500 hover:opacity-90 transition-opacity"
+            disabled={userState.isLoading}
+            className="mt-8 w-full h-11 rounded-full text-white bg-indigo-500 hover:opacity-90 transition-opacity flex items-center justify-center"
           >
-            Inscription
+            {userState.isLoading ? (
+              <Loader2 className="animate-spin text-white mr-2" />
+            ) : (
+              "Inscription"
+            )}
           </button>
           <p className="text-gray-500/90 text-sm mt-4">
             Avez-vous un compte?{" "}
-            <Link to="/" className="text-indigo-400 hover:underline">
+            <a href="/" className="text-indigo-400 hover:underline">
               connectez-vous
-            </Link>
+            </a>
           </p>
         </form>
       </div>

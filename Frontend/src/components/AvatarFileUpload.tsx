@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 
-const AvatarFileUpload = () => {
+const AvatarFileUpload = ({setPhoto} : any) => {
   const [preview, setPreview] = useState<any>(null);
   const fileInputRef = useRef<any>(null);
 
@@ -14,6 +14,8 @@ const AvatarFileUpload = () => {
       };
       reader.readAsDataURL(file);
     }
+
+    setPhoto(file);
   };
 
   // Déclencher le clic sur l'input caché

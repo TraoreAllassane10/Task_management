@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import lefSideImage from "../../assets/leftSideImage.png";
 import { useState, type FormEvent } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
@@ -31,6 +31,12 @@ const LoginPage = () => {
       }
     }
   };
+
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    return <Navigate to="/member/dashboard" />;
+  }
 
   return (
     <div className="flex h-screen w-full bg-white">
@@ -66,7 +72,9 @@ const LoginPage = () => {
             <div className="w-full h-px bg-gray-300/90"></div>
           </div>
 
-          {userState.error && (<span className="text-sm text-red-500 mb-2">{userState.error}</span>)}
+          {userState.error && (
+            <span className="text-sm text-red-500 mb-2">{userState.error}</span>
+          )}
 
           <div className="flex items-center w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
             <svg
@@ -149,9 +157,9 @@ const LoginPage = () => {
           </button>
           <p className="text-gray-500/90 text-sm mt-4">
             N'avez-vous pas de compte?{" "}
-            <Link to="/register" className="text-indigo-400 hover:underline">
+            <a href="/register" className="text-indigo-400 hover:underline">
               inscrivez-vous
-            </Link>
+            </a>
           </p>
         </form>
       </div>
