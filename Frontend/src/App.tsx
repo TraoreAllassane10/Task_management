@@ -27,7 +27,7 @@ function App() {
 
         <Route element={<ProtectedMemberRoutes />}>
           <Route path="/member/dashboard" element={<DashboardMember />} />
-          <Route path="/member/task" element={<TasksMemberPage />} />
+          <Route path="/member/tasks" element={<TasksMemberPage />} />
         </Route>
       </Route>
     </Routes>

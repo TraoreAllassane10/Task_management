@@ -28,16 +28,35 @@ class AdminDashbaord extends Controller
 
             // ChartData
             $progessionChartData = [
-                "attente" => $nombreTacheEnAttente,
-                "progression" => $nombreTacheEnProgession,
-                "terminee" => $nombreTacheTerminee
+                [
+                    "name" => "En attente",
+                    "value" => $nombreTacheEnAttente
+                ],
+                [
+                    "name" => "En progression",
+                    "value" => $nombreTacheEnProgession
+                ],
+                [
+                    "name" => "Terminée",
+                    "value" => $nombreTacheTerminee
+                ]
             ];
 
             $difficulteChartData = [
-                "facile" => $nombreTacheFacile,
-                "normale" => $nombreTacheNormale,
-                "difficile" => $nombreTacheDifficile
+                [
+                    "name" => "Facile",
+                    "value" => $nombreTacheFacile
+                ],
+                [
+                    "name" => "Normale",
+                    "value" => $nombreTacheNormale
+                ],
+                [
+                    "name" => "Difficile",
+                    "value" => $nombreTacheDifficile
+                ]
             ];
+
 
             // Les taches recentes
             $tache_recentes = Tache::owner($user->equipe_id)->latest()->limit(5)->get();

@@ -1,8 +1,11 @@
-import React from 'react'
+import DashbaordLayout from "../../layout/DashbaordLayout"
+
 
 const DashboardMember = () => {
   return (
-    <div>DashboardMember</div>
+    <DashbaordLayout>
+      Member Dashbard
+    </DashbaordLayout>
   )
 }
 

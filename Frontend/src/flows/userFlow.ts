@@ -74,6 +74,7 @@ export const UserFlow = defineFlow(
       },
 
       logout: () => (ops: any) => {
+        localStorage.removeItem("token");
         ops.self._set({
           profile: null,
           isLoading: null,
