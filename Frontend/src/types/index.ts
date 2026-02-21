@@ -18,3 +18,10 @@ export interface Task {
     image: string;
   }[];
 }
+
+interface Membre {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+}

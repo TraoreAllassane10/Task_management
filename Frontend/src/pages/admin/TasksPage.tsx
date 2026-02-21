@@ -19,7 +19,7 @@ const TasksPage = () => {
     <DashbaordLayout>
       {/* Entête */}
       <div className="flex justify-between place-items-center w-full mb-6">
-        <h1 className="text-slate-800 font-medium text-xl">Liste de tache</h1>
+        <h1 className="text-slate-900 font-medium text-2xl">Liste de tache</h1>
 
         <div className="flex gap-4">
           <button

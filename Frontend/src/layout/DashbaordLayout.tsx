@@ -7,7 +7,7 @@ const DashbaordLayout = ({ children }: { children: ReactNode }) => {
     <div>
       <Sidebar isMinified={isMinified} setIsMinified={setIsMinified} />
       <main
-        className={`${isMinified ? "ml-20 " : "lg:ml-64"} p-4 transition duration-200`}
+        className={`${isMinified ? "ml-20 " : "lg:ml-64"} p-8 transition duration-200`}
       >
         {children}
       </main>

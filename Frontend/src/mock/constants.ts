@@ -127,3 +127,73 @@ export const tasks = [
         ]
     }
 ];
+
+export interface Membre {
+    id: string;
+    name: string;
+    email: string;
+    avatar: string;
+}
+
+export const members: Membre[] = [
+    {
+        id: "1",
+        name: "Alice Martin",
+        email: "alice.martin@company.com",
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400"
+    },
+    {
+        id: "2",
+        name: "Bob Johnson",
+        email: "bob.johnson@company.com",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"
+    },
+    {
+        id: "3",
+        name: "Carol White",
+        email: "carol.white@company.com",
+        avatar: "https://images.unsplash.com/photo-1517849845537-1d51a20414de?w=400"
+    },
+    {
+        id: "4",
+        name: "David Brown",
+        email: "david.brown@company.com",
+        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400"
+    },
+    {
+        id: "5",
+        name: "Emma Davis",
+        email: "emma.davis@company.com",
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400"
+    },
+    {
+        id: "6",
+        name: "Frank Miller",
+        email: "frank.miller@company.com",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"
+    },
+    {
+        id: "7",
+        name: "Grace Lee",
+        email: "grace.lee@company.com",
+        avatar: "https://images.unsplash.com/photo-1517849845537-1d51a20414de?w=400"
+    },
+    {
+        id: "8",
+        name: "Henry Wilson",
+        email: "henry.wilson@company.com",
+        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400"
+    },
+    {
+        id: "9",
+        name: "Iris Taylor",
+        email: "iris.taylor@company.com",
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400"
+    },
+    {
+        id: "10",
+        name: "Jack Anderson",
+        email: "jack.anderson@company.com",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"
+    }
+];
