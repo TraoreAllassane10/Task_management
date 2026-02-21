@@ -1,7 +1,10 @@
+import { useState } from "react";
 import type { Task } from "../../types";
 import ProgressBar from "../ProgressBar";
+import ModalDetailTask from "./ModalDetailTask";
 
 const TaskCard = ({
+  id,
   titre,
   description,
   progression,
@@ -10,26 +13,35 @@ const TaskCard = ({
   date_fin,
   member,
 }: Task) => {
+  const [isOpenDetail, setIsOpenDetail] = useState(false);
+
   return (
     <div className="bg-white p-3 flex flex-col gap-2 rounded-sm">
+      <ModalDetailTask taskId={id} isOpenDetail={isOpenDetail} setIsOpenDetail={setIsOpenDetail} />
+
       <div className="flex gap-1">
         <div>{FormatStatus(progression)}</div>
         <div>{FormatDifficulty(difficulte)}</div>
       </div>
-      <div className="flex flex-col gap-1 bg-purple-50 border-l-4 border-purple-500 px-2">
+
+      <div onClick={() => setIsOpenDetail(v => !v)} className="flex flex-col gap-1 bg-purple-50 border-l-4 border-purple-500 px-2 cursor-pointer">
         <h3 className="text-slate-800 text-lg font-medium">{titre}</h3>
         <p className="line-clamp-2 overflow-hidden text-gray-700">
           {description}
         </p>
       </div>
+
       <ProgressBar value={progression} />
+
       <p>
         Tache effectuée <span className="text-blue-500 font-medium">5/5</span>
       </p>
+
       <div className="flex justify-between">
         <span>{date_debut}</span>
         <span>{date_fin}</span>
       </div>
+
       <div>
         <div className="flex -space-x-2">
           {member.map((mb) => (
@@ -90,7 +102,7 @@ const TaskCard = ({
 };
 export default TaskCard;
 
-const FormatDifficulty = (difficulte: string) => {
+export const FormatDifficulty = (difficulte: string) => {
   if (difficulte === "Facile") {
     return <div className="bg-purple-100 text-purple-500 p-1 ">Facile</div>;
   } else if (difficulte === "Difficile") {
@@ -100,7 +112,7 @@ const FormatDifficulty = (difficulte: string) => {
   }
 };
 
-const FormatStatus = (progression: number) => {
+export const FormatStatus = (progression: number) => {
   if (progression === 0) {
     return <div className="bg-blue-100 text-blue-500 p-1">Attente</div>;
   } else if (progression === 100) {

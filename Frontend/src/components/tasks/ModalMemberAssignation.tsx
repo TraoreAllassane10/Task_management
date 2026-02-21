@@ -43,7 +43,7 @@ const ModalMemberAssignation = ({
             `}
           >
             {/* Header */}
-            <div className="flex justify-between items-center py-3 px-4 border-b border-gray-300 flex-shrink-0">
+            <div className="flex justify-between items-center py-3 px-4 border-b border-gray-300 shrink-0">
               <h3 className="font-semibold text-gray-800">
                 Assigner la tache aux membres de l'equipe
               </h3>
