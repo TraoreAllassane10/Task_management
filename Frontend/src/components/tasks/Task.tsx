@@ -1,7 +1,7 @@
 import type { Task } from "../../types";
 import ProgressBar from "../ProgressBar";
 
-const Task = ({
+const TaskCard = ({
   titre,
   description,
   progression,
@@ -88,6 +88,7 @@ const Task = ({
     </div>
   );
 };
+export default TaskCard;
 
 const FormatDifficulty = (difficulte: string) => {
   if (difficulte === "Facile") {
@@ -109,4 +110,4 @@ const FormatStatus = (progression: number) => {
   }
 };
 
-export default Task;
+

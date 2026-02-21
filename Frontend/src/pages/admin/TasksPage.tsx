@@ -1,18 +1,18 @@
 import { useFlow } from "fractostate";
 import DashbaordLayout from "../../layout/DashbaordLayout";
 import { TaskFlow } from "../../flows/taskFlow";
-import Task from "../../components/tasks/Task";
 import { useEffect, useState } from "react";
+import TaskCard from "../../components/tasks/Task";
 
 const TasksPage = () => {
   const [filtre, setFiltre] = useState<
-    "Tout" | "Attente" | "Progression" | "Terminee"
+    "Tout" | "attente" | "progression" | "terminee"
   >("Tout");
 
   const [taskState] = useFlow(TaskFlow);
 
   useEffect(() => {
-    console.log(filtre)
+    console.log(filtre);
   }, [filtre]);
 
   return (
@@ -28,15 +28,15 @@ const TasksPage = () => {
           >
             Tout
           </button>
-          <button onClick={() => setFiltre("Attente")}>Attente</button>
-          <button onClick={() => setFiltre("Progression")}>Progression</button>
-          <button onClick={() => setFiltre("Terminee")}>Terminée</button>
+          <button onClick={() => setFiltre("attente")}>Attente</button>
+          <button onClick={() => setFiltre("progression")}>Progression</button>
+          <button onClick={() => setFiltre("terminee")}>Terminée</button>
         </div>
       </div>
 
       <div className="grid grid-cols-4 gap-4">
         {taskState.tasks?.map((task) => (
-          <Task
+          <TaskCard
             key={task.id}
             titre={task.titre}
             description={task.description}
